@@ -55,11 +55,13 @@ angular.module('pouchdb', [])
 
         api.changes = function(options) {
           var clone = angular.copy(options);
-          clone.onChange = function(change) {
-            return $rootScope.$apply(function() {
-              return options.onChange(change);
-            });
-          };
+	  if (options.hasOwnProperty('onChange')) {
+            clone.onChange = function(change) {
+              return $rootScope.$apply(function() {
+		return options.onChange(change);
+              });
+            };
+	  }
           return db.changes(clone);
         };
 
